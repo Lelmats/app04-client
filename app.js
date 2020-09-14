@@ -1,9 +1,8 @@
 const baseUrl = 'http://localhost:5000';
 const taquitosContainer = document.getElementById('taquitos-container');
-
 const btnPostTaco = document.getElementById('btn-post-taco');
-
 const tacosOptions = document.getElementById('taco-option');
+const btnUpdateTaco = document.getElementById('btn-update-taco');
 
 const tacoForm = {
     name: document.getElementById('taco-name'),
@@ -17,8 +16,23 @@ btnPostTaco.onclick = ()=>{
         quantity: tacoForm.quantity.value,
         pica: tacoForm.pica.value
     }
-
     AddTaquito(taco);
+};
+
+const tacoUForm = {
+    nameU: document.getElementById('taco-name-update'),
+    quantityU: document.getElementById('taco-quantity-update'),
+    picaU: document.getElementById('option-spyciness-update')
+}
+
+btnUpdateTaco.onclick = ()=>{
+    
+    UpdateTaquito(1,
+    {
+        name: tacoUForm.nameU.value,
+        quantity: tacoUForm.quantityU.value,
+        pica: tacoUForm.picaU.value
+    });
 };
 
 const GetTaquitos = ()=>{
@@ -34,7 +48,7 @@ const GetTaquitos = ()=>{
             const tacoQuantity = document.createElement('div');
             const tacoSpyciness = document.createElement('div');
             const btnDeleteTaco = document.createElement('button');
-            btnDeleteTaco.innerHTML = 'Eliminar x';
+            btnDeleteTaco.innerHTML = 'Eliminar';
 
             const {name, quantity, pica, id} = taco;
 
@@ -65,7 +79,6 @@ const GetTaquito = id =>{
     fetch(url)
     .then(data => data.json())
     .then(taco => {
-        
     });
 };
 
@@ -77,7 +90,8 @@ const AddTaquito = taco =>{
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(data => data.json())
+    })
+    .then(data => data.json())
     .then(taco => GetTaquitos());
 };
 
@@ -91,7 +105,7 @@ const UpdateTaquito = (id, data) =>{
         }
     })
     .then(res => res.json())
-    .then(taco => console.log(taco));
+    .then(taco => GetTaquitos());
 };
 
 const DeleteTaquito = id =>{
@@ -99,14 +113,12 @@ const DeleteTaquito = id =>{
     fetch(url, {
         method: 'DELETE'
     })
-    .then(_=> {
-        GetTaquitos();
-    })
+    .then(_=> {GetTaquitos();})
 };
 
 GetTaquitos();
-
-/*UpdateTaquito(1, {
+/*
+UpdateTaquito(1, {
     name: 'costillita',
     quantity: 6,
     pica: 'no'
